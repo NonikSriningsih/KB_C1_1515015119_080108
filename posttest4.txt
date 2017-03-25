@@ -1,0 +1,157 @@
+DOMAINS
+
+nama,jender,pekerjaan,benda,alasan,zat = symbol
+umur=integer
+
+PREDICATES
+
+nondeterm orang(nama, umur, jender, pekerjaan)
+nondeterm selingkuh(nama, nama)
+terbunuh_dengan(nama, benda)
+terbunuh(nama)
+nondeterm pembunuh(nama)
+motif(alasan)
+ternodai(nama, zat)
+milik(nama, benda)
+nondeterm cara_kerja_mirip(benda, benda)
+nondeterm kemungkinan_milik(nama, benda)
+nondeterm dicurigai(nama)
+
+/* * * Fakta-fakta tentang pembunuhan * * */
+CLAUSES
+orang(budi,55,m,tukang_kayu).
+orang(aldi,25,m,pemain_sepak_bola).
+orang(aldi,25,m,tukang_jagal).
+orang(joni,25,m,pencopet).
+selingkuh(ina,joni).
+selingkuh(ina,budi).
+selingkuh(siti,joni).
+terbunuh_dengan(siti,pentungan).
+terbunuh(siti).
+motif(uang).
+motif(cemburu).
+motif(dendam).
+ternodai(budi, darah).
+ternodai(siti, darah).
+ternodai(aldi, lumpur).
+ternodai(joni, coklat).
+ternodai(ina, coklat).
+milik(budi,kaki_palsu).
+milik(joni,pistol).
+
+/* * * Basis Pengetahuan * * */
+cara_kerja_mirip(kaki_palsu, pentungan).
+cara_kerja_mirip(balok, pentungan).
+cara_kerja_mirip(gunting, pisau).
+cara_kerja_mirip(sepatu_bola, pentungan).
+kemungkinan_milik(X,sepatu_bola):-
+orang(X,_,_,pemain_sepak_bola).
+kemungkinan_milik(X,gunting):-
+orang(X,_,_,pekerja_salon).
+kemungkinan_milik(X,Benda):-
+milik(X,Benda).
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+* dicurigai semua orang yang memiliki senjata yang *
+* kerjanya mirip dengan senjata penyebab siti terbunuh. *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+dicurigai(X):-
+terbunuh_dengan(siti,Senjata) ,
+cara_kerja_mirip(Benda,Senjata) ,
+kemungkinan_milik(X,Benda).
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+* dicurigai laki-laki yang selingkuh dengan siti. *
+* * * * * * * * * * * * * * * * * * * * * * * * * */
+
+dicurigai(X):-
+motif(cemburu),
+orang(X,_,m,_),
+selingkuh(siti,X).
+
+/* * * * * * * * * * * * * * * * * * * * * * *
+* dicurigai perempuan yang selingkuh dengan *
+* laki-laki yang juga selingkuh dengan siti *
+* * * * * * * * * * * * * * * * * * * * * * */
+ 
+dicurigai(X):-
+motif(cemburu),
+orang(X,_,f,_),
+selingkuh(X,Lakilaki),
+selingkuh(siti,Lakilaki).
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+* dicurigai pencopet yang mempunyai motif uang. *
+* * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+dicurigai(X):-
+motif(uang),
+orang(X,_,_,pencopet).
+pembunuh(Pembunuh):-
+orang(Pembunuh,_,_,_),
+terbunuh(Terbunuh),
+Terbunuh <> Pembunuh, /* Bukan bunuh diri */
+dicurigai(Pembunuh),
+ternodai(Pembunuh,Zat),
+ternodai(Terbunuh,Zat).
+
+GOAL
+pembunuh(X).
+
+// Keterangan
+Dari kasus diatas, yang merupakan Goalnya yang di cari adalah siapa pembunuh dari siti yang diberi variabel X.
+Setelah program dijalankan, sistem akan menelusuri satu persatu subgoal dan mencocokkan dengan fakta - fakta yang ada pada klausa.
+1.	Penjelasan dari fakta – fakta tentang yang ada di Klausa :
+a.	Budi adalah nama orang yang berumur 55 tahun dengan jenis kelamin laki – laki dan mempunyai pekerjaan sebagai tukang kayu yang mempunyai kaki palsu.
+b.	Aldi adalah nama orang yang berumur 25 tahun dengan jenis kelamin laki – laki dan mempunyai pekerjaan sebagai pemain sepak bola dan tukang jagal.
+c.	Joni adalah nama orang yang berumur 25 tahun dengan jenis kelamin laki – laki dan mempunyai pekerjaan sebagai pencopet yang mempunyai senjata api.
+d.	Ina adalah nama seseorang perempuan yang selingkuh dengan Joni, dan Budi.
+e.	Siti adalah nama seseorang perempuan selingkuh dengan Joni.
+f.	Siti ditemukan terbunuh dengan pentungan dan ternodai darah.
+g.	Motif dari pembunuhan Siti bisa uang, cemburu, atau dendam.
+h.	Budi ditemukan ternodai dengan darah.
+i.	Aldi ditemukan ternodai dengan lumpur.
+j.	Joni dan Ina ditemukan ternodai dengan cokelat.
+
+2.	Penjelasan dari fakta – fakta dari Basis pengetahuan :
+a.	Kaki palsu cara kerjanya sama dengan pentungan.
+b.	Balok cara kerjanya sama dengan pentungan.
+c.	Gunting cara kerjanya sama dengan pisau.
+d.	Sepatu bola cara kerjanya sama dengan pentungan.
+e.	X kemungkinan memiliki sepatu bola,maka X adalah orang yang pekerjaannya adalah pemain sepak bola.
+f.	X kemungkinan mempunyai gunting, maka X adalah orang yang pekerjaannya di salon.
+g.	X kemungkinan memiliki Benda, maka X memiliki Benda ini.
+
+3.	Penjelasan fakta – fakta dari dicurigai semua orang yang memiliki senjata yang kerjanya mirip dengan senjata penyebab Siti terbunuh :
+a.	X dicurigai sebagai pembunuh, jika Siti terbunuh dengan senjata dan Benda yang dipakai untuk membunuh cara kerjanya mirip dengan senjata,  dan Benda kemungkinan milik X.
+
+4.	Penjelasan fakta dari dicurigai laki – laki yang selingkuh dengan Siti :
+a.	X dicurigai sebagai pembunuh, jika motifnya adalah cemburu, dan X adalah orang yang jenis kelamin nya laki – laki yang selingkuh dengan Siti.
+
+5.	Penjelasan fakta dari dicurigai perempuan yang selingkuh dengan laki-laki yang juga selingkuh dengan Siti :
+a.	X dicurigai sebagai pembunuh, jika motifnya cemburu, dan X tersebut adalah orang yang jenis kelaminnya Perempuan, dan X adalah seorang perempuan yang juga selingkuh dengan laki-laki yang selingkuh dengan Siti.
+
+6.	Penjelasan fakta dari dicurigai pencopet yang mempunyai motif uang :
+a.	X dicurigai sebagai pembunuh, jika motif pembunuhannya adalah uang , maka orang tersebut mempunyai pekerjaan sebagai pencopet.
+
+7.	Pembunuh bukanlah yang Terbunuh, atau kasus ini bukan merupakan kasus bunuh diri.
+8.	Seseorang yang dicurigai sebagai Pembunuh adalah seseorang yang ternodai Zat yang sama dengan Zat yang menodai Terbunuh.
+Dari subgoal yang pertama dicurigai pembunuh adalah X ,dan diketahui X adalah orang.
+Jika yang membunuh mempunyai motif uang, maka pembunuh adalah seseorang dengan profesi pencopet.
+Kalau fakta orang yang membunuh diberi variable “Pembunuh”  yang merupakan orang dengan profesi yang bisa apa saja, dan Siti sebagai yang terbunuh diberi variable Terbunuh,Siti terbunuh dengan pentungan dan Kasus ini bukan merupakan kasus bunuh diri.
+Kemudian didalam subgoal Pembunuh dicurigai ternodai oleh zat yang sama dengan zat yang ada di tubuh pembunuh.
+// Penjelasan :
+1.	Sistem pertama kali akan mengecek dari sub goal yang pertama, dari sub goal tersebut dicurigai pembunuh adalah orang yang mempunyai benda yang cara kerjanya sama dengan benda yang membuat Siti terbunuh yaitu “Pentungan”.
+a.	Sistem akan menyimpan data Budi sebagai yang dicurigai sebagai pembunuh dengan kaki palsu yang cara kerjanya mirip dengan pentungan.
+b.	Lalu sistem akan melakukan lacak balik mancari data yang sesuai dengan sub goal dan ditemukan kembali data yang memenuhi syarat pada sub goal yaitu data dengan nama Aldi yang mempunyai benda yaitu sepatu sepak bola yang cara kerjanya sama dengan pentungan.  
+
+2.	Lalu sistem akan melakukan lacak balik mengidentifikasi bahwa Pembunuh tidak sama dengan yang Terbunuh (bukan bunuh diri).
+
+3.	Setelah itu sistem akan mengecek sub goal yang selanjutnya yaitu Pembunuh ternodai suatu zat, dari syarat ini ditemukan beberapa solusi yaitu :
+a.	Budi yang ternodai dengan darah.
+b.	Aldi yang ternodai dengan lumpur.
+c.	Joni yang ternodai dengan cokelat.
+d.	Ina yang ternodai dengan cokelat.
+
+4.	Yang terakhir sistem akan mengecek syarat yang terakhir dimana Zat yang menodai Pembunuh sama dengan Zat yang ada pada yang Terbunuh, Zat tersebut adalah darah
+Dari fakta terakhir dan data yang telah didapat hanya satu orang yang Zat di tubuhnya sama dengan Zat yang ada di tubuh Terbunuh yaitu BUDI sebagai PEMBUNUH.
