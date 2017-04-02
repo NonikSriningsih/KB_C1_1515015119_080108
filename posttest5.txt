@@ -1,0 +1,98 @@
+DOMAINS
+nama = orang(symbol,symbol) /* (Pertama , Kedua) */
+/*didalam domains ini dijelaskan bahwa nama sama dengan orang dengan tipe data symbol, di dalam deklarasi ini menunjukkan bahwa nama merupakan sebuah object jamak*/
+
+hari_lahir = tanggal_lahir(integer,symbol,integer) /* (Hari, Bulan, Tahun) */
+/*hari_lahir sama dengan tanggal_lahir dengan beberapa tipe data
+tipe data ini disesuaikan dengan tanggal bulan dan tahun, tipe yang seperti ini disebut domain campuran jamak, karena terdiri dari tipe data yang berbeda*/
+
+telepon = symbol /* Nomor telepon */
+
+PREDICATES
+nondeterm daftar_telepon(nama,symbol,hari_lahir) 
+/*didalam predicates untuk atom nama didalam daftar_telepon ditulis langsung nama karena didalam doamins sudah dijelaskan bahwa nama adalah type datanya symbol, begitu juga dengan hari lahir yang sudah didefinisikan sebagai tanggal_lahir dengan type-type data yang sudah ditetapkan pula didalam domains*/
+
+yang_ulang_tahun_bulan_ini
+konversi_bulan(symbol,integer)
+cek_bulan_ulang_tahun(integer,hari_lahir)
+cetak_orang(nama) /*pada bagian cetak_nama system hanya perlu mengambil data dari nama, dimana nama terdiri dari orang pertama dan orang kedua yang tipe datanya adalah symbol*/
+
+CLAUSES
+/*pada caluses ini predicates yang_ulang_tahun_bulan_ini, dia menentukan beberapa syarat yaitu selain yang di "write"
+pada clauses date , program akan mengambil data bulan dari sistem komputer kita saat mengakses atau menjalankan program ini
+lalu sistem akan mengambil data dari daftar_telepon, dengan mengambil data nama dan tanggal
+dimana tanggal diambil dari predicates  cek_bulan_ulang_tahun dengan mengambil data dari hari lahir yang tipenya sudah dideklarasikan di domains dengan bemtuk jamak tanggal_lahir
+setelah semua di cek pada clauses terakhir adalah mencetak nama orang yang berulang tahun bulan ini, dengan mengambil data dari domains orang yang merupakan bentuk jamak dari nama yang berisi nama pertama dan nama kedua.
+lalu diberikan predikat fail untuk memaksa lacakbalik dan menemukan solusi yang lain.*/
+
+yang_ulang_tahun_bulan_ini:-
+write("**** Daftar Orang Yang Ulang Tahun Bulan Ini ****"),nl,
+write(" Nama Pertama\t\t Nama Kedua\n"),
+write("******************************************************"),nl,
+date(_, Bulan_ini, _), /* Ambil bulan pada sistem komputer */
+daftar_telepon(Orang, _, Tanggal),
+cek_bulan_ulang_tahun(Bulan_ini, Tanggal),
+cetak_orang(Orang),
+fail.
+
+/*pada predicates cek_bulan_ulang_tahun(integer,hari_lahir) system akan mengecek sesuai dengan yang ada di clauses dan dengan syarat untuk memenuhi konversi_bulan(symbol,integer)
+bahwa bulan yang ada akan dikonversikan ke dalam bentuk angka saat dipanggil didalam system*/
+yang_ulang_tahun_bulan_ini:-
+write("\n\n Tekan sembarang tombol..."),nl,
+readchar(_).
+cetak_orang(orang(Pertama,Kedua)):-
+write(" ",Pertama,"\t\t\t ",Kedua),nl.
+cek_bulan_ulang_tahun(Bul,tanggal_lahir(_,Bulan,_)):-
+konversi_bulan(Bulan,Bulan1),
+Bul = Bulan1.
+
+%daftar berikut adalah data - data yang akan dilacak oleh program untuk mencari solusi sesuai dengan syarat pencarian yang ada.
+
+daftar_telepon(orang(erwin,effendy),"767-8463",tanggal_lahir(3,jan,1955)).
+daftar_telepon(orang(pramudya,kurniawan),"438-8400",tanggal_lahir(5,feb,1985)).
+daftar_telepon(orang(kusdiar,prihatin),"555-5653",tanggal_lahir(3,mar, 1935)).
+daftar_telepon(orang(ui,yansen),"767-2223",tanggal_lahir(29,apr,1951)).
+daftar_telepon(orang(roland,hutagalung),"555-1212",tanggal_lahir(12,may,1962)).
+daftar_telepon(orang(andi,nuruddin),"438-8400",tanggal_lahir(17,jun,1980)).
+daftar_telepon(orang(syarif,musadek),"767-8463",tanggal_lahir(20,jun,1986)).
+daftar_telepon(orang(lidya,widyawati),"555-5653",tanggal_lahir(16,jul,1981)).
+daftar_telepon(orang(yusida,andriani),"767-2223",tanggal_lahir(10,aug,1981)).
+daftar_telepon(orang(slamet,riyadi),"438-8400",tanggal_lahir(25,sep,1981)).
+daftar_telepon(orang(nur,harjanto),"438-8400",tanggal_lahir(20,oct,1952)).
+daftar_telepon(orang(dian,marlini),"555-1212",tanggal_lahir(9,nov,1984)).
+daftar_telepon(orang(teguh,heni),"767-2223",tanggal_lahir(15,nov,1987)).
+daftar_telepon(orang(eka,ardiyanti),"438-8400",tanggal_lahir(31,dec,1981)).
+
+%pada bagian ini ditambahkan beberapa data sesuai dengan soal nomor 3
+
+daftar_telepon(orang(sri,sugiarti),"438-6800",tanggal_lahir(31,mar,1981)).
+daftar_telepon(orang(aldi,badwin),"988-8400",tanggal_lahir(21,mar,1971)).
+daftar_telepon(orang(gigi,gilang),"834-8400",tanggal_lahir(1,mar,1881)).
+daftar_telepon(orang(titi,coklat),"438-8490",tanggal_lahir(9,mar,1980)).
+
+%pada bagian konversi ini adalah mengkonversi nama - nama bulan menjadi pengenalan dalam bentuk angka sesuai dengan jumlah bulan.
+
+konversi_bulan(jan, 1).
+konversi_bulan(feb, 2).
+konversi_bulan(mar, 3).
+konversi_bulan(apr, 4).
+konversi_bulan(may, 5).
+konversi_bulan(jun, 6).
+konversi_bulan(jul, 7).
+konversi_bulan(aug, 8).
+konversi_bulan(sep, 9).
+konversi_bulan(oct, 10).
+konversi_bulan(nov, 11).
+konversi_bulan(dec, 12).
+
+GOAL
+%untuk uji goal sebelum data ditambahkan hasil yang keluar adalah data dengan nama kusdian prihatin hasil tersebut muncul karena mengambil data dari bulan yang sesuai dengan yang ada di laptop ini yaitu bulan 3
+
+yang_ulang_tahun_bulan_ini.
+
+%setelah ditambahkan data dengan bulan yang sama dengan bulan ini didalam laptop maka akan mucul beberapa nama yaitu :
+%- Sri Sugiarti
+%- Aldi Badwin
+%- Gigi Gilang
+%- Titi Cokelat
+%hasil yang muncul hanya berupa nama sesuai dengan yang dideklarasikan didalam clauses.

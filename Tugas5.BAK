@@ -1,0 +1,57 @@
+domains
+matakuliah,prodi,jenis,nama,dosen=symbol
+ruang,nim=integer
+alamat = alamat(jalan,nomor,kota_kab,propinsi)
+jalan = jalan(nama_jalan,nomor)
+kota_kab,propinsi,nama_jalan= symbol
+nomor = string
+
+predicates
+
+nondeterm ajar(matakuliah,nama,prodi,ruang)
+nondeterm ambil(nama,jenis,nim,alamat,matakuliah)
+nondeterm jadwal(matakuliah,nama,dosen,ruang)
+
+clauses
+
+ajar("Intelejensi Buatan","Abdul Kadir","Manajemen Informatika",1).
+ajar("PDE","Indra Yatini","Teknik Informatika",2).
+ajar("Teknik Antar Muka","Sigit Anggoro","Teknik Komputer",3).
+
+ambil("Sugeng Riyadi","Laki - Laki",2002001,alamat(nama_jalan,nomor("Jl. Sudirman", "No. 2")),alamat(kota_kab,propinsi("Pontianak", "Kalimantan Barat")),"Intelejensi Buatan").
+ambil("Yulia Sugondo","Perempuan",2002002,alamat(nama_jalan,nomor("Jl. A. Yani", "No. 10")),alamat(kota_kab,propinsi("Klaten", "Jawa Tengah")),"Intelejensi Buatan").
+ambil("Budiman Sejati","Laki - Laki",2002003,alamat(nama_jalan,nomor("Jl. Slamet Riyadi", "No. 45")),alamat(kota_kab,propinsi("Solo", "Jawa Tengah")),"Intelejensi Buatan").
+
+ambil("Laksamana Sukardi","Laki - Laki",2002004,alamat(nama_jalan,nomor("Jl. MT Haryono", "No. 10")),alamat(kota_kab,propinsi("Palembang", "Sumatera Selatan")),"PDE").
+ambil("Rini Suwandi","Perempuan",2002005,alamat(nama_jalan,nomor("Jl. Letjen Suprapto", "No. 12")),alamat(kota_kab,propinsi("Surabaya", "Jawa Timur")),"PDE").
+ambil("Kwik Kian Gie","Laki - Laki",2002006,alamat(nama_jalan,nomor("Jl. WR Supratman", "No. 100")),alamat(kota_kab,propinsi("Makassar", "Sulawesi Selatan")),"PDE").
+
+ambil("Riri Reza","Laki - Laki",2002007,alamat(nama_jalan,nomor("Jl. RW Monginsidi", "No. 30")),alamat(kota_kab,propinsi("Purwokerto", "Jawa Tengah")),"Teknik Antar Muka").
+ambil("Rachel Maryam","Perempuan",2002008,alamat(nama_jalan,nomor("Jl. Otista", "No. 112")),alamat(kota_kab,propinsi("Bandung", "Jawa Barat")),"Teknik Antar Muka").
+ambil("Garin Nugroho","Laki - Laki",2002009,alamat(nama_jalan,nomor("Jl. Tanjung Pura", "No. 101")),alamat(kota_kab,propinsi("Jaya Pura", "Papua")),"Teknik Antar Muka").
+
+jadwal("Intelejensi Buatan","Sugeng Riyadi","Abdul Kadir",1).
+jadwal("Intelejensi Buatan","Yulia Sugondo","Abdul Kadir",1).
+jadwal("Intelejensi Buatan","Budiman Sejati","Abdul Kadir",1).
+
+jadwal("PDE","Laksamana Sukardi","Indra Yatini" ,2).
+jadwal("PDE","Rini Suwandi","Indra Yatini" ,2).
+jadwal("PDE","Kwik Kian Gie", "Indra Yatini" ,2).
+
+jadwal("Teknik Antar Muka","Riri Reza", "Sigit Anggoro",3).
+jadwal("Teknik Antar Muka","Rachel Maryam" , "Sigit Anggoro" ,3).
+jadwal("Teknik Antar Muka","Garin Nugroho","Sigit Anggoro",3).
+
+goal
+
+%jawaban nomor 1
+ambil(Nama_Mahasiswa,_,_,Alamat,"Intelejensi Buatan"),nl,
+ajar("Intelejensi Buatan",Nama_Dosen,_,Ruangan),nl.
+
+%jawaban nomor 2
+%ajar(Matakuliah_YangDiajarkan,_,_,Ruangan),nl,
+%jadwal("Intelejensi Buatan",Nama_Mahasiswa,Dosen,Ruangan),nl;
+%ajar(Matakuliah_YangDiajarkan,_,_,Ruangan),nl,
+%jadwal("PDE",Nama_Mahasiswa,Dosen,Ruangan),nl;
+%ajar(Matakuliah_YangDiajarkan,_,_,Ruangan),nl,
+%jadwal("Teknik Antar Muka",Nama_Mahasiswa,Dosen,Ruangan),nl.
