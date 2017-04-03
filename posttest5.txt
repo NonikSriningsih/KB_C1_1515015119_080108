@@ -37,6 +37,8 @@ fail.
 
 /*pada predicates cek_bulan_ulang_tahun(integer,hari_lahir) system akan mengecek sesuai dengan yang ada di clauses dan dengan syarat untuk memenuhi konversi_bulan(symbol,integer)
 bahwa bulan yang ada akan dikonversikan ke dalam bentuk angka saat dipanggil didalam system*/
+/*sebenarnya peletakan predicates cetak_orang bisa diletakkan di predicates diatas, hanya saja kalau disini diletakkan dibawah
+untuk bisa mencetak nama orang pertama dan kedua akan muncul setelah kita menjalankan system untuk keluar dengan menekan sembarang huruf*/
 yang_ulang_tahun_bulan_ini:-
 write("\n\n Tekan sembarang tombol..."),nl,
 readchar(_).
