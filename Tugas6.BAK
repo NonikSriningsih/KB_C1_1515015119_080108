@@ -13,8 +13,8 @@ predicates
 /* Numbers likely to become large are declared as reals. */
 
 clauses
-  factorial(N,FactN):- /*pada aturan ini terdapat dua variabel nilai yaitu N dan FactN, dimana nilai yang ada dibawah ini adalah ketetapan awal, yang nilai nya akan berubah setelah
-  terjadi looping untuk memenuhi nilai yang ada di goal*/
+  factorial(N,FactN):- /*pada aturan ini terdapat dua variabel nilai yaitu N dan FactN, dimana nilai yang ada dibawah ini adalah ketetapan awal (bernilai 1 karena sudah ditentukan nilai tidak boleh samadengan atau kurangdari 0,
+yang nilai nya akan berubah setelah terjadi looping sekian kali sampai nilai dari N memenuhi nilai yang ada di goal*/
 	factorial(N,FactN,1,1.0).
 
   factorial(N,FactN,N,FactN):-!. /*pada aturan ini ditetapkan ada 2 variable nilai yaitu N dan FactN, dimana N yang ditetapkan pada aturan diattas awalnya bernilai 1 

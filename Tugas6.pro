@@ -31,6 +31,18 @@ yang nilai nya akan berubah setelah terjadi looping sekian kali sampai nilai dar
 NewI bernilai 3 maka NweP akan bernilai 6 sesuai dengan hasil yang ada di goal saat di running*/
 
 	factorial(N, FactN, NewI, NewP). /**/
+	
+	/*PENJABARAN*/
+	
+	
+/*NewI = 1 + 1 = 2  -> karena nilai nya belum memenuhi maka dilakukan looping lagi untuk perhitungannya
+NewP = 1 * 2 = 2
+
+NewI = 2 + 1 = 3
+NewP = 3 * 2 = 6  -> nilai dari N sudah terpenuhi sesuai dengan yang ada di goal yaitu 3*/
+
+/*kembali dari aturan yang diawal factorial(N,FactN) dimana FactN merupakan nilai dari NewP
+jadi hasil yang keluar di outputnya sama dengan 6 sesuai dengan hasil dari NewP*/
 
 goal
   factorial(3,X). /*didalam goal, yang dicari adalah factorial dari nilai N, 
